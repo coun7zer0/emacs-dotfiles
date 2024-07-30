@@ -1,0 +1,14 @@
+straight
+transient
+jdtls-cache
+tree-sitter
+auto-save-list
+.last-package-update-day
+custom.el
+config.el
+projects
+history
+.cache
+.elpa
+.url
+elpa
