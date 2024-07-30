@@ -805,6 +805,8 @@ Configura el estilo que utilizara java.
   (defun java-style ()
     (setq java-ts-mode-indent-offset tab-width)
 
+    ;;Activar la flag (setq treesit--indent-verbose t) para ver que regla de indentación se está aplicando.
+    ;;Usar el minor mode (treesit-inspect-mode) para saber el nombre del nodo at-point.
     (defun cz/java-indent-rules ()
       `((java
          ((and (parent-is "lambda_expression") (node-is "block"))
