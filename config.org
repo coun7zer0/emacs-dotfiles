@@ -823,8 +823,8 @@ Configura el estilo que utilizara java.
         ((parent-is "method_reference") parent-bol ,(* java-ts-mode-indent-offset 2))
         ((parent-is "catch_type") parent-bol ,(* java-ts-mode-indent-offset 2))
         ((parent-is "type_bound") parent-bol ,(* java-ts-mode-indent-offset 2))
-        ((node-is "}") standalone-parent 0)
-        ((parent-is "block") standalone-parent java-ts-mode-indent-offset)
+        ((parent-is "multiline_string_fragment") parent-bol ,(* java-ts-mode-indent-offset 2))
+        ((parent-is "string_literal") parent-bol ,(* java-ts-mode-indent-offset 2))
 
         ,@(alist-get 'java java-ts-mode--indent-rules))))
 
