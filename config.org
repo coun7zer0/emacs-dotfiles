@@ -44,7 +44,7 @@ caso de que no esté instalado se encarga de descargarlo y cargarlo para su uso.
 #+end_src
 
 ** straight
-carga straight el cual es similar a use package, la diferencia es que
+Carga straight el cual es similar a use package, la diferencia es que
 nos permite instalar paquetes desde github.
 
 #+begin_src emacs-lisp
@@ -870,8 +870,7 @@ Configura el estilo que utilizara JSON.
 
 #+begin_src emacs-lisp
     (defun json-style ()
-      (setq json-ts-mode-indent-offset tab-width)
-      (setq intent-tabs-mode nil))
+      (setq json-ts-mode-indent-offset tab-width))
 
     (add-hook 'json-ts-mode-hook 'json-style)
 #+end_src
@@ -912,8 +911,7 @@ Configura el estilo que utilizara XML.
 #+begin_src emacs-lisp
   (defun xml-style ()
     (setq tab-width 4)
-    (setq nxml-child-indent tab-width)
-    (setq intent-tabs-mode nil))
+    (setq nxml-child-indent tab-width))
 
   (add-hook 'nxml-mode-hook 'xml-style)
 #+end_src
@@ -961,11 +959,10 @@ Establece la configuración de eglot al iniciar YAML.
 Configura el estilo que utilizara YAML.
 
 #+begin_src emacs-lisp
-    (defun yaml-style ()
-      (setq tab-width 4)
-      (setq intent-tabs-mode nil))
+  (defun yaml-style ()
+    (setq tab-width 4))
 
-    (add-hook 'yaml-ts-mode-hook 'yaml-style)
+  (add-hook 'yaml-ts-mode-hook 'yaml-style)
 #+end_src
 
 *** Inicio
@@ -1062,8 +1059,7 @@ Configura el estilo que utilizara CSS.
 
 #+begin_src emacs-lisp
   (defun css-style ()
-    (setq tab-width 4)
-    (setq intent-tabs-mode nil))
+    (setq tab-width 4))
 
   (add-hook 'css-ts-mode-hook 'css-style)
 #+end_src
