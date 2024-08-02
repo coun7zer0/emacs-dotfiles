@@ -675,6 +675,14 @@ almacenamiento de repositorios.
     (setq auth-sources '("~/.authinfo")))
 #+end_src
 
+** Forge
+Forge es un paquete que nos permite trabajar con los Git forges.
+
+#+begin_src emacs-lisp
+  (use-package forge
+    :ensure t)
+#+end_src
+
 * Terminal
 ** vterm
 Instala una muy buena terminal.

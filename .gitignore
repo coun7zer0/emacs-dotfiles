@@ -12,3 +12,4 @@ history
 .elpa
 .url
 elpa
+forge-database.sqlite
