@@ -757,9 +757,10 @@ Configura Eglot, el cual es un cliente LSP.
                 ("C-c e s a" . eglot-shutdown-all)
                 ("C-c e r" . eglot-rename)
                 ("C-c e f" . eglot-format)
-                ("C-c e p e" . flymake-show-project-diagnostics)
-                ("C-c e b" . flymake-goto-prev-error)
-                ("C-c e f" . flymake-goto-next-error))
+                ("C-c e d" . flymake-show-project-diagnostics)
+                ("C-c e e" . eldoc)
+                ("M-p" . flymake-goto-prev-error)
+                ("M-n" . flymake-goto-next-error))
     :custom-face
     (eglot-mode-line ((nil (:inherit nil :weight normal))))
     :custom
@@ -817,8 +818,7 @@ para utilizar las ventajas que nos brinda treesit.
   (add-hook 'java-mode-hook 'java-ts-mode)
 #+end_src
 
-*** Configuración
-Eglot
+*** Configuración Eglot
 Establece la configuración de Eglot al iniciar java.
 
 #+begin_src emacs-lisp
