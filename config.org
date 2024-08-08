@@ -789,7 +789,26 @@ pueda ejecutar el siguiente c√≥digo, este paquete hace que eglot funcione mas r√
     :config (eglot-booster-mode))
 #+end_src
 
+*** eglot-x
+Instala un paquete que le da soporte a extensiones no oficiales de
+lsp.
+
+#+begin_src emacs-lisp
+        (use-package eglot-x
+          :straight (eglot-x :type git :host github :repo "nemethf/eglot-x")
+          :after eglot
+          :config (eglot-x-setup))
+#+end_src
+
 ** Java
+*** devdocs
+Establece las documentaciones por default en los buffers de java.
+
+#+begin_src emacs-lisp
+  (add-hook 'java-ts-mode-hook
+          (lambda () (setq-local devdocs-current-docs '("openjdk~8" "spring_boot"))))
+#+end_src
+
 *** tree-sitter
 Cambia el java-mode por el java-ts-mode en los archivos java, esto
 para utilizar las ventajas que nos brinda treesit.
