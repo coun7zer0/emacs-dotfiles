@@ -317,9 +317,6 @@ Instalación de temas.
   (use-package creamsody-theme
     :ensure t
     :defer t)
-  (use-package github-theme
-    :ensure t
-    :defer t)
   (use-package melancholy-theme
     :ensure t
     :defer t)
@@ -372,15 +369,17 @@ automáticamente distribuyendo el espacio.
 Configura la corrección de texto para español e ingles.
 
 #+begin_src emacs-lisp
-  (use-package ispell
-    :init
-    (setq ispell-program-name "hunspell"
-          ispell-list-command "list"
-          ispell-local-dictionary-alist
-          '(("es_MX,en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "es_MX,en_US") nil utf-8)))
-    (setq ispell-dictionary "es_MX,en_US"
-          flyspell-auto-correct-binding (kbd "C-;"))
-    :hook ((org-mode . flyspell-prog-mode)))
+        (use-package ispell
+          :init
+          (setq ispell-program-name "hunspell"
+                ispell-list-command "list"
+                ispell-local-dictionary-alist
+                '(("es_MX,en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "es_MX,en_US") nil utf-8)))
+          (setq ispell-dictionary "es_MX,en_US"
+                flyspell-auto-correct-binding (kbd "C-;"))
+          :hook ((text-mode . flyspell-mode)
+                 (org-mode . flyspell-mode)
+                 (prog-mode . flyspell-prog-mode)))
 #+end_src
 
 ** Org
@@ -705,6 +704,18 @@ Instala el soporte para git en dired.
 
 * LSP
 ** Core
+*** Devdocs
+Instala devdocs, una utilidad para ver la documentación de diversos
+lenguajes dentro de Emacs.
+
+#+begin_src emacs-lisp
+  (use-package devdocs
+    :ensure t
+    :hook (devdocs-mode . (lambda () (setq truncate-lines nil)))
+    :config
+    (global-set-key (kbd "C-h D") 'devdocs-lookup))
+#+end_src
+
 *** YASnippet
 Instala el paquete que nos permitirá usar snippets a la hora de
 programar.
@@ -715,6 +726,7 @@ programar.
     :config
     (setq yas/root-directory '("~/.config/emacs/snippets")
           yas-indent-line 'fixed))
+  (yas-global-mode 1)
 #+end_src
 
 *** company-mode
