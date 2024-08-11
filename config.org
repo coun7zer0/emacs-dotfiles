@@ -797,6 +797,7 @@ Configura lsp-bridge, el cual es un cliente LSP.
              ("C-c l P" . lsp-bridge-peek-through))
   :custom
   (lsp-bridge-enable-hover-diagnostic t)
+  (lsp-brdige-enable-diagnostic-enable-overlays nil)
   (lsp-bridge-enable-completion-in-string t)
   (acm-enable-codeium t)
   (acm-enable-quick-access t))
@@ -1097,6 +1098,14 @@ node al excec_path de Emacs.
     (add-node-modules-path-command '("echo \"$(npm root)/.bin\"")))
 #+end_src
 
+*** Flymake-eslint
+Instala el soporte para eslint en flymake.
+
+#+begin_src emacs-lisp
+    (use-package flymake-eslint
+      :ensure t)
+#+end_src
+
 *** Estilo
 Configura el estilo que utilizara web-mode.
 
@@ -1125,6 +1134,7 @@ Configura las funciones que inician con web-mode.
     (add-node-modules-path)
     (eldoc-mode)
     (flymake-mode)
+    (flymake-eslint-enable)
     (electric-pair-mode)
     (git-gutter+-mode)
     (emmet-mode)
