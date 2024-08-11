@@ -769,17 +769,37 @@ programar.
 Configura lsp-bridge, el cual es un cliente LSP.
 
 #+begin_src emacs-lisp
-        (use-package lsp-bridge
-        :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
-                  :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
-                  :build (:not compile))
-        :init
-        (global-lsp-bridge-mode)
-        :custom
-        (lsp-bridge-enable-hover-diagnostic t)
-        (lsp-bridge-enable-completion-in-string t)
-        (acm-enable-codeium t)
-        (acm-enable-quick-access t))
+  (use-package lsp-bridge
+  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+            :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+            :build (:not compile))
+  :init
+  (global-lsp-bridge-mode)
+  :bind(:map lsp-bridge-mode-map
+             ("C-c f d" . lsp-bridge-find-def)
+             ("C-c f t" . lsp-bridge-find-type-def)
+             ("C-c f i" . lsp-bridge-find-impl)
+             ("C-c f r" . lsp-bridge-find-references)
+             ("C-c f b" . lsp-bridge-find-def-return)
+             ("C-c f D" . lsp-bridge-find-def-other-window)
+             ("C-c f T" . lsp-bridge-find-type-def-other-window)
+             ("C-c f I" . lsp-bridge-find-impl-other-window)
+             ("C-c l d" . lsp-bridge-popup-documentation)
+             ("C-c l V" . lsp-bridge-popup-documentation-scroll-up)
+             ("C-c l v" . lsp-bridge-popup-documentation-scroll-down)
+             ("C-c l r" . lsp-bridge-rename)
+             ("M-p" . lsp-bridge-diagnostic-jump-prev)
+             ("M-n" . lsp-bridge-diagnostic-jump-next)
+             ("C-c l c" . lsp-bridge-diagnostic-copy)
+             ("C-c l a" . lsp-bridge-code-action)
+             ("C-c l s" . lsp-bridge-restart-process)
+             ("C-c l p" . lsp-bridge-peek)
+             ("C-c l P" . lsp-bridge-peek-through))
+  :custom
+  (lsp-bridge-enable-hover-diagnostic t)
+  (lsp-bridge-enable-completion-in-string t)
+  (acm-enable-codeium t)
+  (acm-enable-quick-access t))
 #+end_src
 
 ** Java
