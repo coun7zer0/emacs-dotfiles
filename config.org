@@ -716,6 +716,17 @@ Instala el soporte para git en dired.
 
 * LSP
 ** Core
+** flymake-diagnostic-at-point
+Instala flymake-diagnostic-at-point el cual es un paquete que nos
+muestra los errores al hacer hover sobre el mismo.
+
+#+begin_src emacs-lisp
+  (use-package flymake-diagnostic-at-point
+    :after flymake
+    :config
+    (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))  
+#+end_src
+
 *** Tree-sitter
 Configura la descarga de los grammar para treesitter.
 
@@ -788,21 +799,31 @@ Configura lsp-bridge, el cual es un cliente LSP.
              ("C-c l V" . lsp-bridge-popup-documentation-scroll-up)
              ("C-c l v" . lsp-bridge-popup-documentation-scroll-down)
              ("C-c l r" . lsp-bridge-rename)
-             ("M-p" . lsp-bridge-diagnostic-jump-prev)
-             ("M-n" . lsp-bridge-diagnostic-jump-next)
-             ("C-c l c" . lsp-bridge-diagnostic-copy)
+             ("M-p" . flymake-goto-prev-error)
+             ("M-n" . flymake-goto-next-error)
              ("C-c l a" . lsp-bridge-code-action)
              ("C-c l s" . lsp-bridge-restart-process)
              ("C-c l p" . lsp-bridge-peek)
              ("C-c l P" . lsp-bridge-peek-through))
   :custom
-  (lsp-bridge-enable-hover-diagnostic t)
+  (lsp-bridge-enable-hover-diagnostic nil)
   (lsp-brdige-enable-diagnostic-enable-overlays nil)
   (lsp-bridge-enable-completion-in-string t)
   (acm-enable-codeium t)
   (acm-enable-quick-access t))
 #+end_src
 
+*** flymake-bridge
+Agrega el backend de lsp-bridge a flymake, esto por preferencia
+personal.
+
+#+begin_src emacs-lisp
+  (use-package flymake-bridge
+    :straight (flymake-bridge :type git :host github :repo "liuyinz/flymake-bridge")
+    :after lsp-bridge
+    :config
+    (add-hook 'lsp-bridge-mode-hook #'flymake-bridge-setup))
+#+end_src
 ** Java
 *** devdocs
 Establece las documentaciones por default en los buffers de java.
