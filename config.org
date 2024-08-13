@@ -825,6 +825,15 @@ personal.
     (add-hook 'lsp-bridge-mode-hook #'flymake-bridge-setup))
 #+end_src
 ** Java
+*** lombok
+Configura lombok para que sea usado por lsp-bridge.
+
+#+begin_src emacs-lisp
+  (require 'lsp-bridge-jdtls)
+  (setq lsp-bridge-enable-auto-import t)
+  (setq lsp-bridge-jdtls-jvm-args '("-javaagent:/home/dotwilliamrc/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar"))
+#+end_src
+
 *** devdocs
 Establece las documentaciones por default en los buffers de java.
 
@@ -832,7 +841,6 @@ Establece las documentaciones por default en los buffers de java.
   (add-hook 'java-ts-mode-hook
           (lambda () (setq-local devdocs-current-docs '("openjdk~8" "spring_boot"))))
 #+end_src
-
 *** tree-sitter
 Cambia el java-mode por el java-ts-mode en los archivos java, esto
 para utilizar las ventajas que nos brinda treesit.
