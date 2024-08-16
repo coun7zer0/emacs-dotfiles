@@ -422,6 +422,13 @@ un modo para trabajar en markdown.
 #+end_src
 
 * Minibuffer
+** subword-mode
+Inicia el subword-mode al arrancar el minibuffer.
+
+#+begin_src emacs-lisp
+  (add-hook 'minibuffer-mode-hook 'subword-mode)
+#+end_src
+
 ** Vertico
 *** Instalación
 Descarga y arranca Vertico, el cual es un paquete que nos brinda
