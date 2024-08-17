@@ -1282,3 +1282,19 @@ Permite agregar sangria a la izquierda usando S-<tab>.
   (global-set-key (kbd "<backtab>") 'cz/indent-left)
 #+end_src
 
+** file-path-to-killring
+Agrega la dirección del archivo actual al kill-ring.
+
+#+begin_src emacs-lisp
+  (defun cz/file-path-to-killring ()
+  "Show the full path to the current file in the minibuffer."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (if file-name
+        (progn
+          (message file-name)
+          (kill-new file-name))
+      (error "Buffer not visiting a file"))))
+
+  (global-set-key (kbd "C-c c c") 'cz/file-path-to-killring)
+#+end_src
