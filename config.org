@@ -910,6 +910,34 @@ Configura las funciones que inician con java.
   (add-hook 'java-ts-mode-hook 'start-java-modes)
 #+end_src
 
+** Comandos personalizados
+*** create-java-test-file
+Crea una función que genera el archivo de test en java del archivo
+actual.
+
+#+begin_src emacs-lisp
+  (defun cz/create-java-test-file ()
+    "Create the corresponding test file for the current Java file."
+    (interactive)
+    (let* ((file-name (buffer-file-name))
+           (test-file-name (and file-name
+                                (replace-regexp-in-string
+                                 "/src/main/java/"
+                                 "/src/test/java/"
+                                 (replace-regexp-in-string
+                                  "\\.java$"
+                                  "Test.java"
+                                  file-name)))))
+      (if test-file-name
+          (progn
+            (make-directory (file-name-directory test-file-name) t)
+            (write-region "" nil test-file-name)
+            (message "Test file created: %s" test-file-name)
+            (find-file test-file-name))
+        (error "Buffer not visiting a file or not a Java file"))))
+
+  (global-set-key (kbd "C-c l t") 'cz/create-java-test-file)
+#+end_src
 ** JSON
 *** tree-sitter
 Cambia el js-json-mode por el json-ts-mode en los archivos JSON, esto
