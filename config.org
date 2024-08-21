@@ -136,9 +136,9 @@ Resalta la línea actual.
 #+end_src
 
 *** fill-column
-Establece el valor por defecto del fill-column a 70 caracteres.
+Establece el valor por defecto del fill-column a 80 caracteres.
 #+begin_src emacs-lisp
-  (set-fill-column 70)
+  (setq-default fill-column 70)
 #+end_src
 
 *** truncate-lines
@@ -723,7 +723,15 @@ Instala el soporte para git en dired.
 
 * LSP
 ** Core
-** flymake-diagnostic-at-point
+*** whitespace-mode
+Muestra indicadores de los espacios.
+
+#+begin_src emacs-lisp
+  (setq whitespace-style '(face spaces trailing space-mark tab-mark))
+  (add-hook 'prog-mode-hook 'whitespace-mode)
+#+end_src
+
+*** flymake-diagnostic-at-point
 Instala flymake-diagnostic-at-point el cual es un paquete que nos
 muestra los errores al hacer hover sobre el mismo.
 
