@@ -18,15 +18,15 @@ los paquetes.
 
 #+begin_src emacs-lisp
   (setq package-archives
-	  '(("gnu" . "https://elpa.gnu.org/packages/")
-	    ("melpa" . "https://melpa.org/packages/")
-	    ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-	    ("melpa-stable" . "https://stable.melpa.org/packages/")))
+    '(("gnu" . "https://elpa.gnu.org/packages/")
+      ("melpa" . "https://melpa.org/packages/")
+      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+      ("melpa-stable" . "https://stable.melpa.org/packages/")))
   (setq package-archive-priorities
-	'(("gnu" . 10)
-	  ("melpa" . 8)
-	  ("nongnu" . 4)
-	  ("melpa-stable" . 0)))
+  '(("gnu" . 10)
+    ("melpa" . 8)
+    ("nongnu" . 4)
+    ("melpa-stable" . 0)))
 #+end_src
 
 ** use-package
@@ -267,30 +267,30 @@ Activa las ligaduras de la fuente.
   :ensure t
   :config
   (ligature-set-ligatures 'prog-mode
-			  '(
-			  ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
-			  (";" (rx (+ ";")))
-			  ("&" (rx (+ "&")))
-			  ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
-			  ("?" (rx (or ":" "=" "\." (+ "?"))))
-			  ("%" (rx (+ "%")))
-			  ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]" "-" "=" ))))
-			  ("\\" (rx (or "/" (+ "\\"))))
-			  ("+" (rx (or ">" (+ "+"))))
-			  (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
-			  ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!" "="))))
-			  ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
-			  ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
-			  ("*" (rx (or ">" "/" ")" (+ "*"))))
-			  ("w" (rx (+ "w")))
-			  ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!" "-"  "/" "|" "="))))
-			  (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
-			  ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_" (+ "#"))))
-			  ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
-			  ("_" (rx (+ (or "_" "|"))))
-			  ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
-			  "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
-			  "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
+        '(
+        ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
+        (";" (rx (+ ";")))
+        ("&" (rx (+ "&")))
+        ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
+        ("?" (rx (or ":" "=" "\." (+ "?"))))
+        ("%" (rx (+ "%")))
+        ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]" "-" "=" ))))
+        ("\\" (rx (or "/" (+ "\\"))))
+        ("+" (rx (or ">" (+ "+"))))
+        (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
+        ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!" "="))))
+        ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
+        ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
+        ("*" (rx (or ">" "/" ")" (+ "*"))))
+        ("w" (rx (+ "w")))
+        ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!" "-"  "/" "|" "="))))
+        (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
+        ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_" (+ "#"))))
+        ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
+        ("_" (rx (+ (or "_" "|"))))
+        ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
+        "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
+        "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
   (global-ligature-mode t))
 #+end_src
 
@@ -393,9 +393,9 @@ instala org-contrib el cual nos brinda add-ons para org-mode.
     (setq calendar-date-style 'european)
     (setq calendar-week-start-day 1)
     (setq org-agenda-files
-	  '("~/.orgFiles/agenda.org"
-	    "~/.orgFiles/diary.org"
-	    "~/.orgFiles/work.org"))
+    '("~/.orgFiles/agenda.org"
+      "~/.orgFiles/diary.org"
+      "~/.orgFiles/work.org"))
 
     (setq diary-file "~/.orgFiles/diary.org")
     (setq org-agenda-diary-file "~/.orgFiles/diary.org")
@@ -838,6 +838,22 @@ personal.
     :after lsp-bridge
     :config
     (add-hook 'lsp-bridge-mode-hook #'flymake-bridge-setup))
+#+end_src
+*** lsp-bridge-tabs
+Cambia los tabs por spaces del buffer después de ejecutar un code
+action.
+
+#+begin_src emacs-lisp
+  (defun cz/replace-tabs-with-spaces ()
+    "Replace all tabs in the buffer with spaces based on the current value of `tab-width`."
+    (interactive)
+    (let ((tab-width (or tab-width 4)))
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward "\t" nil t)
+          (replace-match (make-string tab-width ?\s) nil t)))))
+
+  (add-hook 'before-save-hook 'cz/replace-tabs-with-spaces)
 #+end_src
 ** Java
 *** lombok
