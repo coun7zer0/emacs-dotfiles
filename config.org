@@ -1291,6 +1291,19 @@ Cambia el nombre del buffer y archivo actual
                   (file-name-nondirectory new-name))))))))
   (global-set-key (kbd "C-x C-r") 'cz/rename-this-buffer-and-file)
 #+end_src
+** insert-newline-below
+Crea función que inserta una nueva linea abajo sin mover el cursor.
+
+#+begin_src emacs-lisp
+  (defun insert-newline-below ()
+    "Insert a newline below the current line without moving the cursor or indenting."
+    (interactive)
+    (save-excursion
+      (end-of-line)
+      (newline)))
+
+  (global-set-key (kbd "C-<return>") 'insert-newline-below)
+#+end_src
 
 ** indent-right
 Permite agregar sangria a la derecha usando C-<tab>.
