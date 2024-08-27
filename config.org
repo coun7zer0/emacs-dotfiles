@@ -327,6 +327,7 @@ Define el tema a cargar.
 
 Modifica algunos colores predeterminados del tema.
 
+# para ver las configuraciones de las faces: M-x describe-face RET
 #+begin_src emacs-lisp
   (custom-theme-set-faces
    'kaolin-ocean
