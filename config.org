@@ -299,25 +299,10 @@ Activa las ligaduras de la fuente.
 Instalación de temas.
 
 #+begin_src emacs-lisp
-  (use-package color-theme-sanityinc-tomorrow
-    :ensure t
-    :defer t)
-  (use-package darkokai-theme
-    :ensure t
-    :defer t)
-  (use-package monokai-alt-theme
-    :ensure t
-    :defer t)
-  (use-package gruvbox-theme
-    :ensure t
-    :defer t)
   (use-package darktooth-theme
     :ensure t
     :defer t)
   (use-package creamsody-theme
-    :ensure t
-    :defer t)
-  (use-package melancholy-theme
     :ensure t
     :defer t)
   (use-package kaolin-themes
@@ -337,8 +322,22 @@ Desactiva todos los otros temas activos para evitar que se superpongan.
 Define el tema a cargar.
 
 #+begin_src emacs-lisp
-  (load-theme 'creamsody t)
-  (load-theme 'creamsody-darker t)
+  (load-theme 'kaolin-ocean)
+#+end_src
+
+Modifica algunos colores predeterminados del tema.
+
+#+begin_src emacs-lisp
+  (custom-theme-set-faces
+   'kaolin-ocean
+   '(whitespace-trailing ((t (:background "#3C3836" :foreground "#cd5c60"))))
+   '(whitespace-space ((t (:background nil :foreground "#545c5e")))))
+#+end_src
+
+Activa el tema para aplicar los cambios en las custom faces.
+
+#+begin_src emacs-lisp
+  (enable-theme 'kaolin-ocean)
 #+end_src
 
 ** mode-line
@@ -346,14 +345,14 @@ Hace que el mode-line muestre solo el major mode.
 
 #+begin_src emacs-lisp
   (setq-default mode-line-format '("%e" mode-line-front-space
-                           (:propertize
-                            ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote)
-                            display
-                            (min-width
-                             (5.0)))
-                           mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
-                           (vc-mode vc-mode)
-                           "  " mode-name " " mode-line-misc-info mode-line-end-spaces))
+                                   (:propertize
+                                    ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote)
+                                    display
+                                    (min-width
+                                     (5.0)))
+                                   mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
+                                   (vc-mode vc-mode)
+                                   "  " mode-name " " mode-line-misc-info mode-line-end-spaces))
 #+end_src
 
 * Window
@@ -739,7 +738,7 @@ muestra los errores al hacer hover sobre el mismo.
   (use-package flymake-diagnostic-at-point
     :after flymake
     :config
-    (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))  
+    (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
 #+end_src
 
 *** Tree-sitter
@@ -825,6 +824,7 @@ Configura lsp-bridge, el cual es un cliente LSP.
   (lsp-brdige-enable-diagnostic-enable-overlays nil)
   (lsp-bridge-enable-completion-in-string t)
   (acm-enable-codeium t)
+  (acm-enable-preview t)
   (acm-enable-quick-access t))
 #+end_src
 
