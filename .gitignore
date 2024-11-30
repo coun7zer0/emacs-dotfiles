@@ -17,3 +17,6 @@ elpa
 forge-database.sqlite
 devdocs
 lsp-bridge
+desktop.el
+dmenu-items
+org-roam.db

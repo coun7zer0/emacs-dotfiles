@@ -385,27 +385,81 @@ Configura la corrección de texto para español e ingles.
 Configura las opciones por defecto en los archivos de tipo Org e
 instala org-contrib el cual nos brinda add-ons para org-mode.
 
+Mucha de la siguiente configuración se basa en el siguiente [[https://www.labri.fr/perso/nrougier/GTD/index.html][artículo]].
+
 #+begin_src emacs-lisp
   (use-package org
     :ensure org-contrib
     :config
+    (setq org-agenda-time-grid
+          '((daily today require-timed remove-match)
+            (800 2000)
+            " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"))
+
+    (setq org-directory "~/org/")
+    (setq org-agenda-files (list "inbox.org" "agenda.org"))
+
+    (setq org-capture-templates
+          `(("i" "Inbox" entry  (file "inbox.org")
+             ,(concat "* TODO %?\n"
+                      "/Entered on/ %U"))
+            ("m" "Meeting" entry  (file+headline "agenda.org" "Future")
+             ,(concat "* %? :meeting:\n"
+                      "<%<%Y-%m-%d %a %H:00>>"))
+            ("n" "Note" entry  (file "notes.org")
+             ,(concat "* Note (%a)\n"
+                      "/Entered on/ %U\n" "\n" "%?"))))
+
+    (setq org-agenda-hide-tags-regexp ".")
+
+    (setq org-agenda-prefix-format
+          '((agenda . " %i %-12:c%?-12t% s")
+            (todo   . " ")
+            (tags   . " %i %-12:c")
+            (search . " %i %-12:c")))
+
     (setq org-ellipsis " ▾")
     (setq calendar-date-style 'european)
     (setq calendar-week-start-day 1)
-    (setq org-agenda-files
-    '("~/.orgFiles/agenda.org"
-      "~/.orgFiles/diary.org"
-      "~/.orgFiles/work.org"))
-
-    (setq diary-file "~/.orgFiles/diary.org")
-    (setq org-agenda-diary-file "~/.orgFiles/diary.org")
-    (setq org-agenda-include-diary t)
 
     (setq fill-column 80)
-    (setq org-image-actual-width nil)
+    (setq org-image-actual-width '(300))
+
+    (define-key global-map (kbd "C-c c") 'org-capture)
+    (global-set-key (kbd "C-c a") 'org-agenda)
+
+    (global-set-key (kbd "C-c o i") (lambda () (interactive) (find-file "~/org/inbox.org")))
+    (global-set-key (kbd "C-c o a") (lambda () (interactive) (find-file "~/org/agenda.org")))
+    (global-set-key (kbd "C-c o n") (lambda () (interactive) (find-file "~/org/notes.org")))
+
     (add-hook 'org-mode-hook 'visual-line-mode)
     (add-hook 'org-mode-hook 'auto-fill-mode)
     (add-hook 'org-mode-hook 'org-indent-mode))
+#+end_src
+
+** Org-bullets
+Instala y configura un paquete para mostrar bullets en los archivos org.
+
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :hook (org-mode . org-bullets-mode))
+#+end_src
+
+** Org-Roam
+Instala y configura Org-Roam, un paquete que sirve para tomar notas
+utilizando el método Zettelkasten.
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/roam_notes")
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-setup))
 #+end_src
 
 ** Markdown-Mode
@@ -441,6 +495,9 @@ auto-completado al utilizar comandos que utilicen el minibuffer.
     (vertico-mode)
     :config
     (vertico-multiform-mode)
+    (setq vertico-multiform-commands
+          '((dmenu flat)
+            ))
     (setq vertico-multiform-categories
       '((file grid)
         (consult-grep buffer))))
@@ -524,7 +581,7 @@ potentes ademas de potenciar algunas funciones.
            ("C-c h" . consult-history)
            ("C-c k" . consult-kmacro)
            ("C-c m" . consult-man)
-           ("C-c i" . consult-info)
+           ("C-c h" . consult-info)
            ([remap Info-search] . consult-info)
            ;; C-x bindings in `ctl-x-map'
            ("C-x M-:" . consult-complex-command)
@@ -653,7 +710,7 @@ de archivos.
 Activa el uso de flyspell a la hora de editar los message log
 
 #+begin_src emacs-lisp
-  (add-hook 'log-edit-hook (lambda () (flyspell-mode 1)))  
+  (add-hook 'log-edit-hook (lambda () (flyspell-mode 1)))
 #+end_src
 
 ** Magit
@@ -668,18 +725,19 @@ manejar git desde Emacs
           magit-diff-refine-hunk t))
 #+end_src
 
-** git-gutter+
+** git-gutter
 Instala un paquete que nos brinda información sobre git en nuestro
 buffer.
 
 #+begin_src emacs-lisp
-  (use-package git-gutter+
+  (use-package git-gutter-fringe
     :ensure t
     :config
-    (setq git-gutter+-disabled-modes '(org-mode))
+    (global-git-gutter-mode t)
+    (setq git-gutter-fr:side 'right-fringe)
     ;; Move between local changes
-    (global-set-key (kbd "M-<up>") 'git-gutter+-previous-hunk)
-    (global-set-key (kbd "M-<down>") 'git-gutter+-next-hunk))
+    (global-set-key (kbd "M-<up>") 'git-gutter:previous-hunk)
+    (global-set-key (kbd "M-<down>") 'git-gutter:next-hunk))
 #+end_src
 
 ** Ghub
@@ -693,13 +751,13 @@ almacenamiento de repositorios.
     (setq auth-sources '("~/.authinfo")))
 #+end_src
 
-** Forge
-Forge es un paquete que nos permite trabajar con los Git forges.
+# ** Forge
+# Forge es un paquete que nos permite trabajar con los Git forges.
 
-#+begin_src emacs-lisp
-  (use-package forge
-    :ensure t)
-#+end_src
+# #+begin_src emacs-lisp
+#   (use-package forge
+#     :ensure t)
+# #+end_src
 
 * Terminal
 ** vterm
@@ -824,7 +882,7 @@ Configura lsp-bridge, el cual es un cliente LSP.
   (lsp-bridge-enable-hover-diagnostic nil)
   (lsp-brdige-enable-diagnostic-enable-overlays nil)
   (lsp-bridge-enable-completion-in-string t)
-  (acm-enable-codeium t)
+  (acm-enable-codeium nil)
   (acm-enable-preview t)
   (acm-enable-quick-access t))
 #+end_src
@@ -928,7 +986,6 @@ Configura las funciones que inician con java.
     (rainbow-delimiters-mode)
     (flymake-mode)
     (eldoc-mode)
-    (git-gutter+-mode)
     (subword-mode)
     (electric-pair-mode))
 
@@ -991,7 +1048,6 @@ Configura las funciones que inician con JSON.
     (rainbow-delimiters-mode)
     (flymake-mode)
     (eldoc-mode)
-    (git-gutter+-mode)
     (subword-mode)
     (electric-pair-mode))
 
@@ -1029,7 +1085,6 @@ Configura las funciones que inician con XML.
     (rainbow-delimiters-mode)
     (flymake-mode)
     (eldoc-mode)
-    (git-gutter+-mode)
     (subword-mode)
     (electric-pair-mode))
 
@@ -1065,7 +1120,6 @@ Configura las funciones que inician con YAML.
     (rainbow-delimiters-mode)
     (flymake-mode)
     (eldoc-mode)
-    (git-gutter+-mode)
     (subword-mode)
     (electric-pair-mode))
 
@@ -1112,7 +1166,6 @@ Configura las funciones que inician con HTML.
     (electric-pair-mode)
     (emmet-mode)
     (flymake-mode)
-    (git-gutter+-mode)
     (subword-mode)
     (rainbow-delimiters-mode))
 
@@ -1147,7 +1200,6 @@ Configura las funciones que inician con CSS.
     (eldoc-mode)
     (electric-pair-mode)
     (flymake-mode)
-    (git-gutter+-mode)
     (subword-mode)
     (rainbow-delimiters-mode))
 
@@ -1225,7 +1277,6 @@ Configura las funciones que inician con web-mode.
     (flymake-mode)
     (flymake-eslint-enable)
     (electric-pair-mode)
-    (git-gutter+-mode)
     (emmet-mode)
     (subword-mode)
     (rainbow-delimiters-mode))
@@ -1339,8 +1390,10 @@ Permite agregar sangria a la izquierda usando S-<tab>.
                        (goto-char (region-beginning))
                        (line-beginning-position)))
               (end (save-excursion
-                                                                           (goto-char (region-end))
-                                                                           (line-end-position))))
+                                                                           (goto-char (region-en
+d))
+                                                                           (line-en
+d-position))))
           (indent-rigidly start end (- tab-width))
           (setq deactivate-mark nil)) ; Mantener la selección activa
       (indent-rigidly (line-beginning-position) (line-end-position) (- tab-width))))
@@ -1362,5 +1415,25 @@ Agrega la dirección del archivo actual al kill-ring.
           (kill-new file-name))
       (error "Buffer not visiting a file"))))
 
-  (global-set-key (kbd "C-c c c") 'cz/file-path-to-killring)
+  (global-set-key (kbd "C-c z c") 'cz/file-path-to-killring)
+#+end_src
+
+* Auto-tangle Configuration Files
+Este snippet agrega un hook a los buffers =org-mode= que ejecuta una
+función cada vez que el buffer es guardado. Esta función revisa si el
+archivo guardado es =config.org= y entonces automáticamente exporta la
+configuración aquí a los archivos output asociados.
+
+#+begin_src emacs-lisp
+  ;; Automatically tangle our config.org config file when whe save
+  (defun cz/org-babel-tangle-config ()
+    (when (or (string-equal (file-name-directory (buffer-file-name))
+                        (expand-file-name "~/.config/emacs/"))
+              (string-equal (file-name-directory (buffer-file-name))
+                            (expand-file-name "~/.dotfiles/emacs/")))
+      ;; Dynamic scoping to the rescue
+      (let ((org-confirm-babel-evaluate))
+        (org-babel-tangle))))
+
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'cz/org-babel-tangle-config)))
 #+end_src
